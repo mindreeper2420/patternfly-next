@@ -21,6 +21,7 @@ after_success: |
   if [ -n "$GITHUB_API_KEY" ]; then
     cd "$TRAVIS_BUILD_DIR"
     git checkout -b gh-pages
+    rm -rf
     git add tmp/*
     git -c user.name='travis' -c user.name='travis' commit -m init
     # Make sure to use a quiet output
