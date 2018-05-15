@@ -16,5 +16,12 @@ before_script:
 script:
   - npm run lint:styles
   - npm run build
-local-dir:
-  - public
+after_success:
+  cd "$TRAVIS_BUILD_DIR"
+  make public
+  cd public
+  git checkout -b gh-pages
+  git add public/*
+  git -c user.name='travis' -c user.email='travis' commit -m init
+  git push -f -q https://mindreeper2420:$GITHUB_API_KEY@github.com/mindreeper2420/patternfly-next gh-pages &2>/dev/null
+  cd "$TRAVIS_BUILD_DIR"
