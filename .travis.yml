@@ -1,0 +1,29 @@
+language: node_js
+
+node_js:
+  - "8"
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep-history: true
+  on:
+    branch: master
+
+before_script:
+  - npm install -g gulp-cli
+script:
+  - npm run lint:styles
+  - npm run build
+
+after_success: |
+  if [ -n "$GITHUB_API_KEY" ]; then
+    cd "$TRAVIS_BUILD_DIR"
+    git checkout -b gh-pages
+    git add .
+    git -c user.name='travis' -c user.name='travis' commit -m init
+    # Make sure to use a quiet output
+    git push -f -q https://mindreeper2420:$GITHUB_API_KEY@github.com/mindreeper2420/patternfly-next gh-pages &2>/dev/null
+    cd "$TRAVIS_BUILD_DIR"
+  fi
