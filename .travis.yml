@@ -16,8 +16,8 @@ before_script:
   - npm install -g gulp-cli
 
 script:
-  - npm run lint:styles
-  - npm run build
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ], then bash ./scripts/run_on_pull_requests; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ], then bash ./scripts/run_builds; fi'
 
 before_deploy:
   - cd $TRAVIS_BUILD_DIR
